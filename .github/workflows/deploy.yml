@@ -1,0 +1,28 @@
+name: Deploy bigcat to remote 2024
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH Key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no eric@118.31.20.197 'bash -s' << 'EOF'
+          cd /home/eric/prj/bigcat
+          git pull origin main
+          # Add commands to restart your service, if necessary
+          # e.g., docker-compose up -d or systemctl restart your-service
+        EOF
