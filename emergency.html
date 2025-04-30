@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Management - Emergency</title>
+    <style>
+        :root {
+            --secondary-color: #FF7F50;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg,
+            #0029A7 25%,
+            var(--secondary-color) 75%
+            );
+            background-size: 200% 200%;
+            animation: fluid 16s ease infinite;
+            font-family: Arial, sans-serif;
+        }
+
+        @keyframes fluid {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+                background-size: 150% 200%;
+            }
+        }
+
+        .emergency-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: white;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .alert-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #f44336;
+            animation: alert-pulse 2s infinite;
+        }
+
+        @keyframes alert-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+            }
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .alert-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+
+        .alert-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .alert-description {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .acknowledge-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .resolve-btn {
+            background: #0029A7;
+            color: white;
+        }
+
+        .acknowledge-btn:hover {
+            background: #45a049;
+        }
+
+        .resolve-btn:hover {
+            background: #001f7a;
+        }
+
+        .system-status {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0029A7;
+            margin-bottom: 1rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .status-item {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+
+        .status-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .critical {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="emergency-container">
+        <div class="header">
+            <h1>Emergency Dashboard</h1>
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        </div>
+
+        <div class="alerts-grid">
+            <!-- Critical Alert 1 -->
+            <div class="alert-card">
+                <div class="alert-header">
+                    <span class="alert-title">High CPU Usage</span>
+                    <span class="alert-time">2 minutes ago</span>
+                </div>
+                <div class="alert-description">
+                    <p>CPU usage has exceeded 95% for more than 5 minutes. This may cause service degradation.</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="action-btn acknowledge-btn">Acknowledge</button>
+                    <button class="action-btn resolve-btn">Resolve</button>
+                </div>
+            </div>
+
+            <!-- Critical Alert 2 -->
+            <div class="alert-card">
+                <div class="alert-header">
+                    <span class="alert-title">Database Connection Issues</span>
+                    <span class="alert-time">5 minutes ago</span>
+                </div>
+                <div class="alert-description">
+                    <p>Multiple failed connection attempts to the primary database server detected.</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="action-btn acknowledge-btn">Acknowledge</button>
+                    <button class="action-btn resolve-btn">Resolve</button>
+                </div>
+            </div>
+
+            <!-- Critical Alert 3 -->
+            <div class="alert-card">
+                <div class="alert-header">
+                    <span class="alert-title">Disk Space Warning</span>
+                    <span class="alert-time">10 minutes ago</span>
+                </div>
+                <div class="alert-description">
+                    <p>Root partition is at 98% capacity. Immediate action required to prevent system failure.</p>
+                </div>
+                <div class="alert-actions">
+                    <button class="action-btn acknowledge-btn">Acknowledge</button>
+                    <button class="action-btn resolve-btn">Resolve</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="system-status">
+            <div class="status-title">System Status Overview</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">CPU Usage</div>
+                    <div class="status-value critical">98%</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Memory Usage</div>
+                    <div class="status-value">85%</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Disk Usage</div>
+                    <div class="status-value critical">98%</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Network Traffic</div>
+                    <div class="status-value">High</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Active Alerts</div>
+                    <div class="status-value critical">3</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">System Uptime</div>
+                    <div class="status-value">7d 12h 30m</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Color animation script from back.html
+        const colors = [
+            "#FF7F50", "#FF6100", "#FFBF00", "#CDA434",
+            "#F5F5DC", "#FFDAE9", "#FFFFFF", "#C0C0C0",
+            "#C8C8C8", "#0096FF", "#232323", "#C8C8C8"
+        ];
+
+        let currentIndex = 0;
+        const duration = 2000;
+
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.replace('#', ''), 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+
+        function interpolateColor(startHex, endHex, progress) {
+            const start = hexToRgb(startHex);
+            const end = hexToRgb(endHex);
+            const r = Math.round(start.r + (end.r - start.r) * progress);
+            const g = Math.round(start.g + (end.g - start.g) * progress);
+            const b = Math.round(start.b + (end.b - start.b) * progress);
+            return `rgb(${r},${g},${b})`;
+        }
+
+        function animateColorTransition() {
+            const nextIndex = (currentIndex + 1) % colors.length;
+            const startColor = colors[currentIndex];
+            const endColor = colors[nextIndex];
+            let startTime = null;
+
+            function update(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                document.documentElement.style.setProperty(
+                    '--secondary-color',
+                    interpolateColor(startColor, endColor, progress)
+                );
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    currentIndex = nextIndex;
+                    setTimeout(animateColorTransition, 500);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        document.documentElement.style.setProperty('--secondary-color', colors[0]);
+        setTimeout(animateColorTransition, 2000);
+
+        // Add event listeners for alert buttons
+        document.querySelectorAll('.acknowledge-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertCard = this.closest('.alert-card');
+                alertCard.style.borderLeftColor = '#FFA500';
+                this.textContent = 'Acknowledged';
+                this.disabled = true;
+            });
+        });
+
+        document.querySelectorAll('.resolve-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertCard = this.closest('.alert-card');
+                alertCard.style.borderLeftColor = '#4CAF50';
+                this.textContent = 'Resolved';
+                this.disabled = true;
+                this.previousElementSibling.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html> 

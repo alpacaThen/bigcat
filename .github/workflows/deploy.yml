@@ -1,0 +1,29 @@
+name: Deploy to Remote Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH Key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@60.204.157.194 'bash -s' << 'EOF'
+          cd /var/www/html
+          git pull origin main
+          chown -R www-data:www-data .
+          chmod -R 755 .
+          systemctl restart nginx
+        EOF
