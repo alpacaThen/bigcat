@@ -18,12 +18,36 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Add GitHub to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+
     - name: Deploy to Server
       run: |
-        ssh -o StrictHostKeyChecking=no root@60.204.157.194 'bash -s' << 'EOF'
+        echo "Starting deployment..."
+        ssh -v -o StrictHostKeyChecking=no root@60.204.157.194 'bash -s' << 'EOF'
+          set -e
+          echo "Changing to web directory..."
           cd /var/www/html
+          
+          echo "Setting up git..."
+          git config --global --add safe.directory /var/www/html
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
+          echo "Pulling latest changes..."
           git pull origin main
+          
+          echo "Setting permissions..."
           chown -R www-data:www-data .
-          chmod -R 755 .
+          find . -type d -exec chmod 755 {} \;
+          find . -type f -exec chmod 644 {} \;
+          
+          echo "Restarting nginx..."
           systemctl restart nginx
+          
+          echo "Deployment completed successfully!"
         EOF
+      env:
+        GIT_SSH_COMMAND: 'ssh -o StrictHostKeyChecking=no'
