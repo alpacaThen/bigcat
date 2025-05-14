@@ -278,14 +278,14 @@
 
         // Function to load Docker services
         function loadServices() {
-            fetch('api/services.php')
+            fetch('services.php')
                 .then(response => response.json())
                 .then(data => {
                     const servicesGrid = document.getElementById('servicesGrid');
                     servicesGrid.innerHTML = '';
 
-                    if (data.services && data.services.length > 0) {
-                        data.services.forEach(service => {
+                    if (data && data.length > 0) {
+                        data.forEach(service => {
                             const serviceCard = document.createElement('div');
                             serviceCard.className = 'service-card';
                             serviceCard.innerHTML = `
@@ -294,10 +294,8 @@
                                     <div class="status-indicator status-${service.status}"></div>
                                 </div>
                                 <div class="service-info">
-                                    <p>Image: ${service.image}</p>
                                     <p>Port: ${service.port || 'N/A'}</p>
                                     <p>Status: ${service.status}</p>
-                                    <p>Uptime: ${service.uptime}</p>
                                 </div>
                                 <div class="service-actions">
                                     <button class="action-btn view-btn" onclick="window.open('http://60.204.157.194:${service.port}', '_blank')">View</button>
